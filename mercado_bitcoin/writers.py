@@ -1,7 +1,12 @@
+
 import datetime
 import json
 import os
+import boto3
+from tempfile import NamedTemporaryFile
 from typing import List
+from dotenv import load_dotenv
+import os 
 
 
 class DataTypeNotSupportedForIngestionException(Exception):
@@ -25,7 +30,7 @@ class DataWriter:
         with open(self.filename, "a") as f:
             f.write(row)
 
-    def write(self, data: [List, dict]):
+    def _write_to_file(self, data: [List, dict]):
         if isinstance(data, dict):
             self._write_row(json.dumps(data) + "\n")
         elif isinstance(data, List):
@@ -33,3 +38,33 @@ class DataWriter:
                 self.write(element)
         else:
             raise DataTypeNotSupportedForIngestionException(data)
+
+    def write(self, data: [List, dict]):
+       self._write_to_file(data = data)
+
+class S3Writter(DataWriter): 
+    load_dotenv()
+    def __init__(self, coin:str, api:str): 
+        super().__init__(coin, api)
+        self.tempfile = NamedTemporaryFile()
+        self.client = boto3.client("s3",
+        aws_access_key_id =  os.environ.get('AWSAccessKeyId'),
+        aws_secret_access_key = os.environ.get('AWSSecretKey')
+        )
+
+        self.key = f"mercado_bitcoin/{self.api}/coin={self.coin}/extracted_at={datetime.datetime.now().date()}/{self.api}_{self.coin}/{datetime.datetime.now()}.json"
+
+    def _write_row(self, row: str) -> None:
+        with open(self.tempfile.name, "a") as f: 
+            f.write(row)
+    
+    def write(self, data: [List, dict]):
+        self._write_to_file(data = data)
+        self._write_file_to_s3()
+    
+    def _write_file_to_s3(self): 
+        self.client.put_object(
+            Body= self.tempfile, 
+            Bucket= "mercado-bitcoin",
+            Key= self.key
+        )

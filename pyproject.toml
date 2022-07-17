@@ -7,6 +7,8 @@ authors = ["Sébastien Lozano-Forero"]
 [tool.poetry.dependencies]
 python = "^3.8"
 requests = "^2.28.1"
+ratelimit = "^2.2.1"
+backoff = "^1.10.0"
 
 [tool.poetry.dev-dependencies]
 

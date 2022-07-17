@@ -2,7 +2,7 @@ import datetime
 from abc import ABC, abstractmethod
 from typing import List
 
-from mercado_bitcoin.apis import DaySummaryApi
+from apis import DaySummaryApi
 
 class DataIngestor(ABC):
 
@@ -46,3 +46,7 @@ class DaySummaryIngestor(DataIngestor):
                 data = api.get_data(date=date)
                 self.writer(coin=coin, api=api.type).write(data)
             self._update_checkpoint(date + datetime.timedelta(days=1))
+
+
+#%%
+

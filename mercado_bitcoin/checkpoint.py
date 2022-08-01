@@ -11,7 +11,7 @@ logging.basicConfig(level=logging.INFO)
 class CheckpointModel(Model):
     class Meta:
         table_name = "mercado_bitcoin_ingestor_checkpoints"
-        region = "us-east-1"
+        region = "ca-central-1"
 
     report_id = UnicodeAttribute(hash_key=True)
     checkpoint_date = UnicodeAttribute()
@@ -19,7 +19,10 @@ class CheckpointModel(Model):
 
 class DynamoCheckpoints:
     def __init__(
-        self, model: CheckpointModel, report_id: str, default_start_date: datetime.date
+        self, 
+        model: CheckpointModel, 
+        report_id: str, 
+        default_start_date: datetime.date
     ):
         self.default_start_date = default_start_date
         self.model = model
@@ -27,12 +30,12 @@ class DynamoCheckpoints:
         self.create_table()
 
     def create_checkpoint(self, checkpoint_date):
-        checkpoint = self.model(self.report_id, checkpoint_date=f"{checkpoint_date}")
+        checkpoint = self.model(self.report_id, checkpoint_date=f'{checkpoint_date}')
         checkpoint.save()
 
     def update_checkpoint(self, checkpoint_date):
         checkpoint = self.model.get(self.report_id)
-        checkpoint.checkpoint_date = f"{checkpoint_date}"
+        checkpoint.checkpoint_date = f'{checkpoint_date}'
         checkpoint.save()
 
     def create_or_update_checkpoint(self, checkpoint_date):
@@ -61,7 +64,5 @@ class DynamoCheckpoints:
             logger.info(f"Checkpoint found for {self.report_id}: {checkpoint}")
             return datetime.datetime.strptime(checkpoint, "%Y-%m-%d").date()
         else:
-            logger.info(
-                f"Checkpoint not found for {self.report_id} using default_start_date"
-            )
+            logger.info(f"Checkpoint not found for {self.report_id} using default_start_date")
             return self.default_start_date

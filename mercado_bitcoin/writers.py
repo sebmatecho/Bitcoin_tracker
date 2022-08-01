@@ -43,14 +43,10 @@ class DataWriter:
        self._write_to_file(data = data)
 
 class S3Writter(DataWriter): 
-    load_dotenv()
     def __init__(self, coin:str, api:str): 
         super().__init__(coin, api)
         self.tempfile = NamedTemporaryFile()
-        self.client = boto3.client("s3",
-        aws_access_key_id =  os.environ.get('AWSAccessKeyId'),
-        aws_secret_access_key = os.environ.get('AWSSecretKey')
-        )
+        self.client = boto3.client('s3')
 
         self.key = f"mercado_bitcoin/{self.api}/coin={self.coin}/extracted_at={datetime.datetime.now().date()}/{self.api}_{self.coin}/{datetime.datetime.now()}.json"
 

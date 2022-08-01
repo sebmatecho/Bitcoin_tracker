@@ -10,7 +10,7 @@ if __name__ == "__main__":
     day_summary_ingestor = AWSDaySummaryIngestor(
         writer=S3Writter,
         coins=["BTC", "ETH", "LTC", "BCH"],
-        default_start_date=datetime.date(2021, 6, 1)
+        default_start_date=datetime.date(2020, 1, 1)
     )
 
 

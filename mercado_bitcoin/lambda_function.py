@@ -15,5 +15,5 @@ def lambda_handler(event, context):
     AwsDaySummaryIngestor(
         writer=S3Writter,
         coins=["BTC", "ETH", "LTC", "BCH"],
-        default_start_date=datetime.date(2021, 6, 1),
+        default_start_date=datetime.date(2020, 1, 1),
     ).ingest()

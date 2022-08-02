@@ -1,7 +1,7 @@
 [tool.poetry]
-name = "mercado_bitcoin_lambda"
+name = "bitcoin"
 version = "0.1.0"
-description = "Mercado bitcoin data ingestion pipeline"
+description = "Data Ingestion pipeline cripto"
 authors = ["Sébastien Lozano-Forero"]
 
 [tool.poetry.dependencies]

@@ -17,7 +17,7 @@ black = "^21.6b0"
 zappa = "^0.50.0"
 flake = "^3.9.2"
 pre-commit = "^2.13.0"
-pytest = "^6.2.4"
+pytest = "^7.1.2"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

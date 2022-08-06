@@ -5,7 +5,6 @@ import os
 import boto3
 from tempfile import NamedTemporaryFile
 from typing import List
-from dotenv import load_dotenv
 import os 
 
 

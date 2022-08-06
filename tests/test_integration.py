@@ -12,5 +12,4 @@ class TestDaySummary:
     def test_get_data_better(self):
         actual = DaySummaryApi(coin="BTC").get_data(date = datetime.date(2022,1,1)).get("date")
         expected = "2022-01-01"
-        print(actual)
         assert actual == expected
